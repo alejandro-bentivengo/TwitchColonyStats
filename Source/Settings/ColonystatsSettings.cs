@@ -79,7 +79,7 @@ namespace Colonystats
 
             Rect connectionButton = new Rect(input.x, input.y + verticalSpacing, input.width, verticalHeight);
 
-            if (TwitchWrapper.Client.IsConnected)
+            if (TwitchWrapper.Client != null && TwitchWrapper.Client.IsConnected)
             {
                 Widgets.Label(input, TCText.ColoredText("Connected", Color.green));
 
@@ -89,7 +89,7 @@ namespace Colonystats
             {
                 Widgets.Label(input, TCText.ColoredText("Not Connected", Color.red));
 
-                if (Widgets.ButtonText(connectionButton, "Connect")) TwitchWrapper.StartAsync();
+                if (Widgets.ButtonText(connectionButton, "Connect")) TwitchWrapper.StartAsync(true);
             }
 
             label.y += verticalSpacing * 2;

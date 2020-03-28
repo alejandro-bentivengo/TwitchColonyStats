@@ -31,7 +31,7 @@ namespace Colonystats
     {
         static Startup()
         {
-            TwitchWrapper.StartAsync();
+            TwitchWrapper.StartAsync(false);
         }
     }
 

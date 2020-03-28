@@ -18,15 +18,15 @@ namespace Colonystats
 
         public static readonly List<ITwitchTranslator> TRANSLATORS = new List<ITwitchTranslator>();
 
-        public static void StartAsync()
+        public static void StartAsync(bool bypass)
         {
-            Initialize(new ConnectionCredentials(ColonyStatsSettings.bot_username, ColonyStatsSettings.oauth_token, "wss://irc-ws.chat.twitch.tv:443", true));
+            Initialize(new ConnectionCredentials(ColonyStatsSettings.bot_username, ColonyStatsSettings.oauth_token, "wss://irc-ws.chat.twitch.tv:443", true), bypass);
         }
 
-        public static void Initialize(ConnectionCredentials credentials)
+        public static void Initialize(ConnectionCredentials credentials, bool bypass)
         {
             ResetClient();
-            if (ColonyStatsSettings.connectOnGameStartup)
+            if (bypass || ColonyStatsSettings.connectOnGameStartup)
             {
                 InitializeClient(credentials);
             }
