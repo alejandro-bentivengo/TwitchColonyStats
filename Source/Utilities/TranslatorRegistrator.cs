@@ -13,6 +13,7 @@ namespace Colonystats.Utilities
             AddTranslator(new ColonistTranslator());
             AddTranslator(new ColonistDetailsTranslator());
             AddTranslator(new HelpTranslator());
+            AddTranslator(new SkillTranslator());
             Logger.Log("Finishing Registering default Twitch translators", LogType.INFO);
         }
 
