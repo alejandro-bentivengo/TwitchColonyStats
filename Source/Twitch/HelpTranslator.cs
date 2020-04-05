@@ -7,8 +7,6 @@ namespace Colonystats.Twitch
     sealed class HelpTranslator : ITwitchTranslator
     {
 
-        internal static readonly List<string> REGISTERED_COMMANDS = new List<string>();
-
         private static readonly string COMMAND = "help";
 
         public HelpTranslator() : base(COMMAND)
@@ -20,20 +18,45 @@ namespace Colonystats.Twitch
             return msg.Message.Length > 0 && msg.Message.Split(' ')[0].Equals("!" + COMMAND);
         }
 
+        public override string GetHelp()
+        {
+            return "Just execute !help to see the different registered commands, use !help {command} to see the command help";
+        }
+
         public override string ParseCommand(ChatMessage msg)
         {
-            return GetAllCommands();
-            throw new NotImplementedException();
+            string[] message = msg.Message.Split(' ');
+            if (message.Length == 1)
+            {
+                return GetAllCommands();
+            }
+            else if (message.Length > 1)
+            {
+                return GetCommandDoc(message[1]);
+            }
+            return null;
+        }
+
+        private string GetCommandDoc(string v)
+        {
+            foreach (ITwitchTranslator command in TwitchWrapper.TRANSLATORS)
+            {
+                if (command.GetCommand().Equals(v))
+                {
+                    return command.GetHelp();
+                }
+            }
+            return null;
         }
 
         private string GetAllCommands()
         {
             string response = "All commands must be executed with '!' in front: ";
-            foreach (string command in REGISTERED_COMMANDS)
+            foreach (ITwitchTranslator command in TwitchWrapper.TRANSLATORS)
             {
-                response += command + " | ";
+                response += command.GetCommand() + " | ";
             }
-            return response.Substring(0, response.Length - 3);
+            return response + "Use !help {command} to see the command help";
         }
     }
 }

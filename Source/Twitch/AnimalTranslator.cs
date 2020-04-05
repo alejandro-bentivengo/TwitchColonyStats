@@ -1,7 +1,5 @@
 ﻿using Colonystats.Utilities;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using TwitchLib.Client.Models;
 using Verse;
 
@@ -29,11 +27,7 @@ namespace Colonystats.Twitch
         public override string ParseCommand(ChatMessage msg)
         {
             string[] message = msg.Message.Split(' ');
-            if (message.Length == 1)
-            {
-                return GetAllDefs();
-            }
-            else if (message.Length > 1)
+            if (message.Length > 1)
             {
                 string def = ANIMAL_DEFS.TryGetValue(message[1]);
                 if (def != null)
@@ -66,6 +60,11 @@ namespace Colonystats.Twitch
                 response += def + " | ";
             }
             return response.Substring(0, response.Length - 3);
+        }
+
+        public override string GetHelp()
+        {
+            return "Use !animals {animal type} to return all tamed animals of that type in the colony. " + GetAllDefs();
         }
     }
 }

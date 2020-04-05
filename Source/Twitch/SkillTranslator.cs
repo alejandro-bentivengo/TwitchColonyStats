@@ -20,6 +20,11 @@ namespace Colonystats.Twitch
             return msg.Message.Length > 0 && msg.Message.Split(' ')[0].Equals("!" + COMMAND);
         }
 
+        public override string GetHelp()
+        {
+            return "Use !skills {colonist nickname} to get a detail of the colonist skills";
+        }
+
         public override string ParseCommand(ChatMessage msg)
         {
             string[] message = msg.Message.Split(' ');

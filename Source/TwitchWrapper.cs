@@ -17,6 +17,7 @@ namespace Colonystats
         public static TwitchClient Client { get; private set; }
 
         public static readonly List<ITwitchTranslator> TRANSLATORS = new List<ITwitchTranslator>();
+        public static readonly Dictionary<string, DateTime> USER_TIMEOUT = new Dictionary<string, DateTime>();
 
         public static void StartAsync(bool bypass)
         {
@@ -87,32 +88,17 @@ namespace Colonystats
 
         private static void OnMessageReceived(object sender, OnMessageReceivedArgs e)
         {
-            bool canRunCommand = false;
-            if (ColonyStatsSettings.subsOnlyCommands)
-            {
-                if (e.ChatMessage.IsSubscriber || e.ChatMessage.IsMe || e.ChatMessage.IsBroadcaster || e.ChatMessage.IsVip)
-                {
-                    canRunCommand = true;
-                }
-            }
-            else
-            {
-                canRunCommand = true;
-            }
-            if (canRunCommand)
+            if (CanUserRunCommand(e))
             {
                 try
                 {
-                    Logger.Log("Message: " + $"{e.ChatMessage.DisplayName}: {e.ChatMessage.Message}", LogType.INFO);
                     if (Current.Game != null && TRANSLATORS != null && TRANSLATORS.Count > 0)
                     {
                         foreach (ITwitchTranslator receiver in TRANSLATORS)
                         {
-                            Logger.Log("Evaluating " + receiver + " for message " + e.ChatMessage, LogType.INFO);
                             if (receiver.CanExecute(e.ChatMessage))
                             {
                                 string message = receiver.ParseCommand(e.ChatMessage);
-                                // If the name is incorrect or nothing is found the message will be null
                                 Logger.Log("Message for Twitch: " + message, LogType.INFO);
                                 if (message != null)
                                 {
@@ -129,7 +115,6 @@ namespace Colonystats
                             }
                         }
                     }
-                    Logger.Log("Finished processing", LogType.INFO);
                 }
                 catch (Exception ex)
                 {
@@ -138,53 +123,58 @@ namespace Colonystats
             }
         }
 
+        private static bool CanUserRunCommand(OnMessageReceivedArgs e)
+        {
+            bool canRunCommand = false;
+            if (ColonyStatsSettings.subsOnlyCommands)
+            {
+                if (e.ChatMessage.IsSubscriber || e.ChatMessage.IsMe || e.ChatMessage.IsBroadcaster || e.ChatMessage.IsVip)
+                {
+                    canRunCommand = true;
+                }
+            }
+            else
+            {
+                canRunCommand = true;
+            }
+            return canRunCommand;
+        }
+
         private static void SendLargeChatMessage(string message)
         {
             List<string> splitMessages = new List<string>();
-            int maxLength = 490;
+            int maxLength = 500;
             Logger.Log("Message length " + message.Length, LogType.INFO);
 
-            int i = 0;
             int tentativeCutLength = 0;
             int prevCut = 0;
-            foreach (char character in message)
+            bool finishedProcessing = false;
+            while (!finishedProcessing)
             {
-                if (character == ' ')
+                for (int i = prevCut; i < maxLength; i++)
                 {
-                    tentativeCutLength = i;
+                    if (message[i].Equals(' '))
+                    {
+                        tentativeCutLength = i;
+                    }
                 }
-                if (i == maxLength)
+                splitMessages.Add(message.Substring(prevCut, tentativeCutLength - 1));
+                message = message.Substring(tentativeCutLength - 1, message.Length);
+                if (message.Length > maxLength)
                 {
-                    splitMessages.Add(message.Substring(prevCut, tentativeCutLength));
-                    prevCut = prevCut + tentativeCutLength;
-                    i = 0;
-                    tentativeCutLength = 0;
-
+                    maxLength = message.Length;
                 }
-                else
+                if (message.Length == 0)
                 {
-                    i++;
+                    finishedProcessing = true;
                 }
             }
-            splitMessages.Add(message.Substring(prevCut, message.Length - prevCut));
             foreach (string splitMessage in splitMessages)
             {
                 SendChatMessage(splitMessage);
                 Thread.Sleep(100);
             }
         }
-
-        // Method not being used currently
-        /*private static void OnChatCommandReceived(object sender, OnChatCommandReceivedArgs e)
-        {
-            Logger.Log("Command: " + $"{e.Command.ChatMessage.DisplayName}: {e.Command.ChatMessage.Message}", LogType.INFO);
-
-            Models.ChatCommand chatCommand = ChatCommandController.GetChatCommand(e.Command.CommandText);
-            if (chatCommand != null)
-            {
-                chatCommand.TryExecute(e.Command as ITwitchCommand);
-            }
-        }*/
 
         public static void SendChatMessage(string message)
         {

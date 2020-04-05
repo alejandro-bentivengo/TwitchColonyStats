@@ -19,6 +19,11 @@ namespace Colonystats.Twitch
             return msg.Message.Length > 0 && msg.Message.Split(' ')[0].Equals("!" + COMMAND);
         }
 
+        public override string GetHelp()
+        {
+            return "Use !colonists to get a list of the current colonists in the colony";
+        }
+
         public override string ParseCommand(ChatMessage msg)
         {
             List<Pawn> colonists = ColonistSelection.AllColonistsInOrder;

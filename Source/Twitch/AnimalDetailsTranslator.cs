@@ -28,6 +28,11 @@ namespace Colonystats.Twitch
             return msg.Message.Length > 0 && msg.Message.Split(' ')[0].Equals("!" + COMMAND);
         }
 
+        public override string GetHelp()
+        {
+            return "Use !animal {animal name} to return the animal details";
+        }
+
         public override string ParseCommand(ChatMessage msg)
         {
             string[] message = msg.Message.Split(' ');
