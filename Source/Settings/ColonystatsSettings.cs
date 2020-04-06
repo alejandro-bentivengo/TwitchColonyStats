@@ -10,16 +10,19 @@ namespace Colonystats
         public static string bot_username = "";
         public static string oauth_token = "";
 
+        public static float userCommandTimeout = 5f;
         public static bool connectOnGameStartup = false;
+        public static bool enableSpammyMessages = false;
         public static bool showWelcomeMessage = false;
         public static bool subsOnlyCommands = false;
+        public static bool useWhispers = false;
 
         public void DoWindowContents(Rect inRect)
         {
             Rect channelDetails = new Rect(0f, verticalSpacing, inRect.width, 64f);
             Widgets.Label(channelDetails, TCText.BigText("Channel Details"));
 
-            float sectionVertical = channelDetails.y + (verticalSpacing * 2f);
+            float sectionVertical = channelDetails.y + (verticalSpacing);
 
             Rect label = new Rect(0f, sectionVertical, 250f, verticalHeight);
             Widgets.Label(label, "Channel:");
@@ -67,10 +70,10 @@ namespace Colonystats
 
             // Connection
 
-            Rect connectionDetails = new Rect(0f, input.y + (verticalSpacing * 2), inRect.width, 64f);
+            Rect connectionDetails = new Rect(0f, input.y + (verticalSpacing), inRect.width, 64f);
             Widgets.Label(connectionDetails, TCText.BigText("Connection"));
 
-            sectionVertical = connectionDetails.y + (verticalSpacing * 2f);
+            sectionVertical = connectionDetails.y + (verticalSpacing);
 
             label.y = sectionVertical;
             input.y = sectionVertical;
@@ -103,10 +106,28 @@ namespace Colonystats
             input.y = label.y;
             Widgets.Checkbox(input.position, ref showWelcomeMessage);
 
-            Rect subsMenu = new Rect(350f, secondMenu, 250f, 50f);
+            label.y += verticalSpacing * 1;
+            Widgets.Label(label, "Use whispers as reply:");
+            input.y = label.y;
+            Widgets.Checkbox(input.position, ref useWhispers);
+
+            Rect subsMenu = new Rect(350f, secondMenu, 250f, 25f);
             Widgets.Label(subsMenu, "Subs Only:");
             subsMenu.x += 150f;
             Widgets.Checkbox(subsMenu.position, ref subsOnlyCommands);
+
+            subsMenu.x -= 150f;
+            subsMenu.y += verticalSpacing;
+            Widgets.Label(subsMenu, "User Timeout:");
+            subsMenu.x += 150f;
+            //subsMenu.y -= 15f;
+            userCommandTimeout = Widgets.HorizontalSlider(subsMenu, userCommandTimeout, 0f, 20f, false, userCommandTimeout != 0 ? userCommandTimeout + " seconds" : "Timeout disabled", null, null, 1);
+
+            subsMenu.x -= 150f;
+            subsMenu.y += verticalSpacing;
+            Widgets.Label(subsMenu, "Spammy replys:");
+            subsMenu.x += 150f;
+            Widgets.Checkbox(subsMenu.position, ref enableSpammyMessages);
 
             Rect footer = new Rect(0f, inRect.height - 10f, inRect.width, 20f);
 
@@ -126,6 +147,9 @@ namespace Colonystats
             Scribe_Values.Look(ref connectOnGameStartup, "connectOnGameStartup", false);
             Scribe_Values.Look(ref showWelcomeMessage, "showWelcomeMessage", false);
             Scribe_Values.Look(ref subsOnlyCommands, "subsOnlyCommands", false);
+            Scribe_Values.Look(ref userCommandTimeout, "userCommandTimeout", 5f);
+            Scribe_Values.Look(ref enableSpammyMessages, "enableSpammyMessages", false);
+            Scribe_Values.Look(ref useWhispers, "useWhispers", false);
         }
 
         bool showOauth = false;

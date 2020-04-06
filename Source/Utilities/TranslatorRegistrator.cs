@@ -14,6 +14,7 @@ namespace Colonystats.Utilities
             AddTranslator(new ColonistDetailsTranslator());
             AddTranslator(new HelpTranslator());
             AddTranslator(new SkillTranslator());
+            AddTranslator(new AdminTranslator());
             Logger.Log("Finishing Registering default Twitch translators", LogType.INFO);
         }
 

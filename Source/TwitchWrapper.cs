@@ -53,15 +53,12 @@ namespace Colonystats
 
         private static void InitializeClient(ConnectionCredentials credentials)
         {
-            // Initialize the client with the credentials instance, and setting a default channel to connect to.
             Client.Initialize(credentials, ColonyStatsSettings.channel_username);
 
-            // Bind callbacks to events
             Client.OnConnected += OnConnected;
             Client.OnJoinedChannel += OnJoinedChannel;
             Client.OnMessageReceived += OnMessageReceived;
             Client.OnWhisperReceived += OnWhisperReceived;
-            //Client.OnChatCommandReceived += OnChatCommandReceived;
             Client.OnError += OnError;
             Client.Connect();
         }
@@ -102,14 +99,15 @@ namespace Colonystats
                                 Logger.Log("Message for Twitch: " + message, LogType.INFO);
                                 if (message != null)
                                 {
-                                    if (message.Length > 500)
+                                    if (message.Length > 500 && (ColonyStatsSettings.enableSpammyMessages || ColonyStatsSettings.useWhispers))
                                     {
-                                        SendLargeChatMessage(message);
+                                        SendLargeChatMessage(e, message);
                                     }
                                     else
                                     {
-                                        SendChatMessage(message);
+                                        SendChatMessage(e, message);
                                     }
+                                    USER_TIMEOUT.SetOrAdd(e.ChatMessage.Username, DateTime.Now);
                                 }
                                 break;
                             }
@@ -126,59 +124,67 @@ namespace Colonystats
         private static bool CanUserRunCommand(OnMessageReceivedArgs e)
         {
             bool canRunCommand = false;
-            if (ColonyStatsSettings.subsOnlyCommands)
+            DateTime userLastMessage = USER_TIMEOUT.TryGetValue(e.ChatMessage.Username);
+            if ((userLastMessage != null && DateTime.Now.Subtract(userLastMessage).TotalSeconds > ColonyStatsSettings.userCommandTimeout) || ColonyStatsSettings.useWhispers)
             {
-                if (e.ChatMessage.IsSubscriber || e.ChatMessage.IsMe || e.ChatMessage.IsBroadcaster || e.ChatMessage.IsVip)
+                if (ColonyStatsSettings.subsOnlyCommands)
+                {
+                    if (e.ChatMessage.IsSubscriber || e.ChatMessage.IsMe || e.ChatMessage.IsBroadcaster || e.ChatMessage.IsVip)
+                    {
+                        canRunCommand = true;
+                    }
+                }
+                else
                 {
                     canRunCommand = true;
                 }
             }
-            else
-            {
-                canRunCommand = true;
-            }
             return canRunCommand;
         }
 
-        private static void SendLargeChatMessage(string message)
+        private static void SendLargeChatMessage(OnMessageReceivedArgs e, string message)
         {
             List<string> splitMessages = new List<string>();
             int maxLength = 500;
             Logger.Log("Message length " + message.Length, LogType.INFO);
 
             int tentativeCutLength = 0;
-            int prevCut = 0;
             bool finishedProcessing = false;
             while (!finishedProcessing)
             {
-                for (int i = prevCut; i < maxLength; i++)
+                for (int i = 0; i < maxLength; i++)
                 {
                     if (message[i].Equals(' '))
                     {
                         tentativeCutLength = i;
                     }
                 }
-                splitMessages.Add(message.Substring(prevCut, tentativeCutLength - 1));
-                message = message.Substring(tentativeCutLength - 1, message.Length);
-                if (message.Length > maxLength)
+                splitMessages.Add(message.Substring(0, tentativeCutLength));
+                message = message.Substring(tentativeCutLength);
+                Logger.Log(message, LogType.INFO);
+                if (message.Length <= maxLength)
                 {
-                    maxLength = message.Length;
-                }
-                if (message.Length == 0)
-                {
+                    splitMessages.Add(message);
                     finishedProcessing = true;
                 }
             }
             foreach (string splitMessage in splitMessages)
             {
-                SendChatMessage(splitMessage);
+                SendChatMessage(e, splitMessage);
                 Thread.Sleep(100);
             }
         }
 
-        public static void SendChatMessage(string message)
+        public static void SendChatMessage(OnMessageReceivedArgs e, string message)
         {
-            Client.SendMessage(Client.GetJoinedChannel(ColonyStatsSettings.channel_username), message);
+            if (ColonyStatsSettings.useWhispers)
+            {
+                Client.SendWhisper(e.ChatMessage.Username, message);
+            }
+            else
+            {
+                Client.SendMessage(Client.GetJoinedChannel(ColonyStatsSettings.channel_username), message);
+            }
         }
     }
 }

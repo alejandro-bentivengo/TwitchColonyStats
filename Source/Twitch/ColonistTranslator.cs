@@ -39,7 +39,7 @@ namespace Colonystats.Twitch
             string response = colonists.Count + " found: ";
             foreach (Pawn colonist in colonists)
             {
-                response += colonist.Name.ToStringFull + " | ";
+                response += colonist.Name.ToStringShort + " | ";
             }
             return response.Substring(0, response.Length - 3);
         }

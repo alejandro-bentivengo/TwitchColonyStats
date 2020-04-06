@@ -262,12 +262,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ColonyStats.cs" />
-    <Compile Include="Controllers\ChatCommandController.cs" />
-    <Compile Include="Models\ChatCommand.cs" />
-    <Compile Include="Models\CommandMethod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings\ColonyStatsSettings.cs" />
     <Compile Include="TwitchWrapper.cs" />
+    <Compile Include="Twitch\AdminTranslator.cs" />
     <Compile Include="Twitch\AnimalDetailsTranslator.cs" />
     <Compile Include="Twitch\AnimalTranslator.cs" />
     <Compile Include="Twitch\ColonistDetailsTranslator.cs" />

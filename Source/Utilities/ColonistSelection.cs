@@ -37,7 +37,7 @@ namespace Colonystats.Utilities
             return Find.World.worldPawns.AllPawnsAlive
                 .Where(pawn => pawn.Faction == Faction.OfPlayer &&
                                 pawn.IsColonist &&
-                                pawn.Name.ToStringFull.Equals(name))
+                                pawn.Name.ToStringShort.ToLower().Equals(name.ToLower()))
                 .OrderBy(pawn => pawn.Map?.uniqueID ?? pawn.GetCaravan()?.ID + 500 ?? -1)
                 .ThenBy(pawn => pawn.kindDef.label)
                 .ThenBy(pawn => pawn.Label)
@@ -45,7 +45,7 @@ namespace Colonystats.Utilities
                     Find.Maps.SelectMany(map => map.mapPawns.AllPawnsSpawned)
                         .Where(pawn => pawn.Faction == Faction.OfPlayer &&
                                         pawn.IsColonist &&
-                                        pawn.Name.ToStringFull.Equals(name))
+                                        pawn.Name.ToStringShort.ToLower().Equals(name.ToLower()))
                         .OrderBy(pawn => pawn.Map?.uniqueID ?? pawn.GetCaravan()?.ID + 500 ?? -1)
                         .ThenBy(pawn => pawn.kindDef.label)
                         .ThenBy(pawn => pawn.Label)

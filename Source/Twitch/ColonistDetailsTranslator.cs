@@ -22,7 +22,7 @@ namespace Colonystats.Twitch
 
         public override string GetHelp()
         {
-            return "Use !colonist {colonist nickname} to return the colonist details";
+            return "Use !colonist {colonist nickname} to return the colonist details.";
         }
 
         public override string ParseCommand(ChatMessage msg)

@@ -6,7 +6,7 @@ namespace Colonystats.Utilities
     {
         public static string BigText(string str)
         {
-            return $"<size=32>{str}</size>";
+            return $"<size=25>{str}</size>";
         }
 
         public static string ColoredText(string str, Color color)
