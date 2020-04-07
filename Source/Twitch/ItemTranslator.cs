@@ -24,7 +24,7 @@ namespace Colonystats.Twitch
 
         public override string GetHelp()
         {
-            return "Use !item {item name} to find how many there are currently in storage.";
+            return "Use !item {item name} to find how many there are currently in storage. Put the name in \" to exact match the name.";
         }
 
         public override string ParseCommand(ChatMessage msg)
@@ -35,7 +35,15 @@ namespace Colonystats.Twitch
                 string itemName = msg.Message.Replace("!" + COMMAND + " ", "");
                 if (itemName.Length > 4)
                 {
-                    List<Thing> matching = ThingSelection.GetAllStoredThingsThatContain(itemName);
+                    List<Thing> matching = null;
+                    if (itemName.StartsWith("\"") && itemName.EndsWith("\""))
+                    {
+                        matching = ThingSelection.GetAllStoredThingsThatExactMatch(itemName.Replace("\"", ""));
+                    }
+                    else
+                    {
+                        matching = ThingSelection.GetAllStoredThingsThatContain(itemName);
+                    }
                     if (matching != null && matching.Count > 0)
                     {
                         return GetPrettyItemCount(matching);
@@ -62,12 +70,12 @@ namespace Colonystats.Twitch
             foreach (Thing item in matching)
             {
                 long count = 0;
-                if (items.ContainsKey(item.Label))
+                if (items.ContainsKey(item.LabelNoCount))
                 {
-                    count = items.TryGetValue(item.Label);
+                    count = items.TryGetValue(item.LabelNoCount);
                 }
-                count++;
-                items.SetOrAdd(item.Label, count);
+                count += item.stackCount;
+                items.SetOrAdd(item.LabelNoCount, count);
             }
             return items;
         }
