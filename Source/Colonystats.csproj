@@ -270,7 +270,9 @@
     <Compile Include="Twitch\AnimalTranslator.cs" />
     <Compile Include="Twitch\ColonistDetailsTranslator.cs" />
     <Compile Include="Twitch\ColonistTranslator.cs" />
+    <Compile Include="Twitch\CountTranslator.cs" />
     <Compile Include="Twitch\HelpTranslator.cs" />
+    <Compile Include="Twitch\ItemTranslator.cs" />
     <Compile Include="Twitch\ITwitchTranslator.cs" />
     <Compile Include="Twitch\SkillTranslator.cs" />
     <Compile Include="Utilities\AnimalRegistrator.cs" />
@@ -278,6 +280,7 @@
     <Compile Include="Utilities\ColonistSelection.cs" />
     <Compile Include="Utilities\Logger.cs" />
     <Compile Include="Utilities\TCText.cs" />
+    <Compile Include="Utilities\ThingSelection.cs" />
     <Compile Include="Utilities\TranslatorRegistrator.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
-	<name>TwitchColonyStats</name>
+	<name>Twitch Colony Stats</name>
 	<author>clodan</author>
 	<packageId>clodan.TwitchColonyStats</packageId>
 	<supportedVersions>

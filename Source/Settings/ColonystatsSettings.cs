@@ -125,7 +125,7 @@ namespace Colonystats
 
             subsMenu.x -= 150f;
             subsMenu.y += verticalSpacing;
-            Widgets.Label(subsMenu, "Spammy replys:");
+            Widgets.Label(subsMenu, "Spammy replies:");
             subsMenu.x += 150f;
             Widgets.Checkbox(subsMenu.position, ref enableSpammyMessages);
 

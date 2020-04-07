@@ -71,7 +71,6 @@ namespace Colonystats
         {
         }
 
-
         private static void OnError(object sender, object e)
         {
             Logger.Log(Logger.UNKNOWN, LogType.ERROR);
@@ -116,7 +115,7 @@ namespace Colonystats
                 }
                 catch (Exception ex)
                 {
-                    Logger.Log("Exception: " + ex.Message + "\n" + ex.StackTrace, Utilities.LogType.ERROR);
+                    Logger.Log("Exception: " + ex.Message + "\n" + ex.StackTrace, LogType.ERROR);
                 }
             }
         }
@@ -146,8 +145,6 @@ namespace Colonystats
         {
             List<string> splitMessages = new List<string>();
             int maxLength = 500;
-            Logger.Log("Message length " + message.Length, LogType.INFO);
-
             int tentativeCutLength = 0;
             bool finishedProcessing = false;
             while (!finishedProcessing)
@@ -161,7 +158,6 @@ namespace Colonystats
                 }
                 splitMessages.Add(message.Substring(0, tentativeCutLength));
                 message = message.Substring(tentativeCutLength);
-                Logger.Log(message, LogType.INFO);
                 if (message.Length <= maxLength)
                 {
                     splitMessages.Add(message);
