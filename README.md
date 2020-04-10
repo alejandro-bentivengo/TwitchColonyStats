@@ -8,14 +8,26 @@ A very special thank to hodldeeznuts (https://github.com/hodldeeznuts)
 Without you this wouldnt be possible!
 
 # Default commands
-
 There are vary basic commands in this iteration, all of them NEED to start with '!':
-- animals -> Will bring a list of all possible animals registered
-- animals <animalDefName> -> Will bring all tamed animals in the colony
-- animal <animalName> -> Will bring all details for the animal named <animalName>
+- animals animalType -> Will bring all tamed animals animalType in the colony
+- animal animalName -> Will bring all details for the animal named animalName
 - colonists -> Will bring a list of all player colonists
-- colonist <colonistName> -> Will bring the details for the colonist named <colonistName>
-- help -> Quite easy to understand what it does right?
+- colonist colonistName -> Will bring the details for the colonist named colonistName
+- skills colonistName -> Will bring the skill details for the colonist named colonistName
+- item itemName -> Will bring a total count of the items that contain itemName. itemName must be at least 4 characters long for it to be a valid search. Use " for exact match the item name.
+- count pawn -> Will bring a total count of the animalType that matches pawn or a count of the colonists if pawn is "colonist"
+- drugs -> Will bring a list of non-medical drugs
+- health colonistName -> Will bring the health status of the colonist named colonistName
+- traits colonistName -> Will bring the traits and background story of the colonist named colonistName
+- help -> Will bring a list with the registered commands
+- help commandName -> Will bring the explanation for the command commandName
+
+# Mod commands
+- admin option -> The list of possible admin options is as follows:
+   - timeout secondsT -> changes the timeout for the secondsT value (must be between 0 and 20)
+   - spam -> toggles the Spammy messages setting
+   - subs -> toggles the subs only setting
+   - whispers -> toggles the whispers option
 
 # Settings Explanation
 
