@@ -6,12 +6,11 @@ using Verse;
 
 namespace Colonystats.Twitch
 {
-    sealed class SkillTranslator : ITwitchTranslator
+    class TraitsTranslator : ITwitchTranslator
     {
+        private static readonly string COMMAND = "traits";
 
-        private static readonly string COMMAND = "skills";
-
-        public SkillTranslator() : base(COMMAND)
+        public TraitsTranslator() : base(COMMAND)
         {
         }
 
@@ -22,7 +21,7 @@ namespace Colonystats.Twitch
 
         public override string GetHelp()
         {
-            return "Use !skills {colonist nickname} to get a detail of the colonist skills. Case insensitive.";
+            return "Use !traits {colonist name} to return all colonist traits.";
         }
 
         public override string ParseCommand(ChatMessage msg)
@@ -34,7 +33,7 @@ namespace Colonystats.Twitch
                 List<Pawn> matching = ColonistSelection.GetAllColonistsInOrderWithName(name);
                 if (matching != null && matching.Count > 0)
                 {
-                    return GetPrettySkills(matching[0]);
+                    return GetPrettyTraits(matching[0]);
                 }
                 else
                 {
@@ -44,14 +43,16 @@ namespace Colonystats.Twitch
             return null;
         }
 
-        private string GetPrettySkills(Pawn pawn)
+        private string GetPrettyTraits(Pawn pawn)
         {
-            string response = "Skills for " + pawn.Name.ToStringShort + ": ";
-            foreach (SkillRecord skill in pawn.skills.skills)
+            string response = "Traits for " + pawn.Name.ToStringShort + ": ";
+            foreach (Trait trait in pawn.story.traits.allTraits)
             {
-                response += skill.def.defName + ": " + skill.Level + " | ";
+                response += trait.Label + " | ";
             }
-            return response.Substring(0, response.Length - 3);
+            response += "Childhood: " + pawn.story.childhood.title + " | ";
+            response += "Adulthood: " + pawn.story.adulthood.title;
+            return response;
         }
     }
 }

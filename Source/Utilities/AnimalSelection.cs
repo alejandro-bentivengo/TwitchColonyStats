@@ -45,7 +45,7 @@ namespace Colonystats.Utilities
                 .Where(pawn => pawn.Faction == Faction.OfPlayer &&
                                pawn.RaceProps.Animal &&
                                ThingSelectionUtility.SelectableByHotkey(pawn) &&
-                               pawn.Name.ToStringFull.Equals(name))
+                               pawn.Name.ToStringFull.ToLower().Equals(name.ToLower()))
                 .OrderBy(pawn => pawn.Map?.uniqueID ?? pawn.GetCaravan()?.ID + 500 ?? -1)
                 .ThenBy(pawn => pawn.kindDef.label)
                 .ThenBy(pawn => pawn.Label)

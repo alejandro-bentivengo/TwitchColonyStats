@@ -24,7 +24,7 @@ namespace Colonystats.Twitch
 
         public override string GetHelp()
         {
-            return "Use !item {item name} to find how many there are currently in storage. Put the name in \" to exact match the name.";
+            return "Use !item {item name} to find how many there are currently in storage. Put the name in \" to exact match the name. Case insensitive.";
         }
 
         public override string ParseCommand(ChatMessage msg)

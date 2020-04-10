@@ -30,7 +30,7 @@ namespace Colonystats.Twitch
 
         public override string GetHelp()
         {
-            return "Use !animal {animal name} to return the animal details";
+            return "Use !animal {animal name} to return the animal details. Case insensitive.";
         }
 
         public override string ParseCommand(ChatMessage msg)
@@ -43,6 +43,10 @@ namespace Colonystats.Twitch
                 if (matching != null && matching.Count > 0)
                 {
                     return GetPrettyAnimal(matching[0]);
+                }
+                else
+                {
+                    return "Animal " + name + " not found";
                 }
             }
             return null;

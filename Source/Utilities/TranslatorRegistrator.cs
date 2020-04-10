@@ -17,6 +17,9 @@ namespace Colonystats.Utilities
             AddTranslator(new AdminTranslator());
             AddTranslator(new CountTranslator());
             AddTranslator(new ItemTranslator());
+            AddTranslator(new TraitsTranslator());
+            AddTranslator(new HealthTranslator());
+            AddTranslator(new DrugsTranslator());
             Logger.Log("Finishing Registering default Twitch translators", LogType.INFO);
         }
 

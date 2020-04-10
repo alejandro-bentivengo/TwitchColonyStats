@@ -128,7 +128,7 @@ namespace Colonystats
             {
                 if (ColonyStatsSettings.subsOnlyCommands)
                 {
-                    if (e.ChatMessage.IsSubscriber || e.ChatMessage.IsMe || e.ChatMessage.IsBroadcaster || e.ChatMessage.IsVip)
+                    if (e.ChatMessage.IsSubscriber || e.ChatMessage.IsMe || e.ChatMessage.IsBroadcaster || e.ChatMessage.IsVip || e.ChatMessage.IsModerator)
                     {
                         canRunCommand = true;
                     }

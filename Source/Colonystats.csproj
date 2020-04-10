@@ -271,10 +271,13 @@
     <Compile Include="Twitch\ColonistDetailsTranslator.cs" />
     <Compile Include="Twitch\ColonistTranslator.cs" />
     <Compile Include="Twitch\CountTranslator.cs" />
+    <Compile Include="Twitch\DrugsTranslator.cs" />
+    <Compile Include="Twitch\HealthTranslator.cs" />
     <Compile Include="Twitch\HelpTranslator.cs" />
     <Compile Include="Twitch\ItemTranslator.cs" />
     <Compile Include="Twitch\ITwitchTranslator.cs" />
     <Compile Include="Twitch\SkillTranslator.cs" />
+    <Compile Include="Twitch\TraitsTranslator.cs" />
     <Compile Include="Utilities\AnimalRegistrator.cs" />
     <Compile Include="Utilities\AnimalSelection.cs" />
     <Compile Include="Utilities\ColonistSelection.cs" />

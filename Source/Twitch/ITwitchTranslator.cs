@@ -11,6 +11,7 @@ namespace Colonystats.Twitch
         {
             this.command = command;
         }
+
         public abstract string ParseCommand(ChatMessage msg);
 
         public abstract bool CanExecute(ChatMessage msg);

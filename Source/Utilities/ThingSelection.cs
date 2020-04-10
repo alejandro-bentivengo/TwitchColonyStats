@@ -28,12 +28,22 @@ namespace Colonystats.Utilities
                 .ToList();
         }
 
-        internal static List<Thing> GetAllStoredThingsThatExactMatch(string name)
+        public static List<Thing> GetAllStoredThingsThatExactMatch(string name)
         {
             return Find.Maps.SelectMany(map => map.spawnedThings)
                 .Where(thing => thing.Spawned &&
                                 thing.IsInValidStorage() &&
                                 thing.LabelNoCount.ToLower().Equals(name))
+                .OrderBy(thing => thing.thingIDNumber)
+                .ToList();
+        }
+
+        public static List<Thing> GetAllStoredNonMedicalDrugs()
+        {
+            return Find.Maps.SelectMany(map => map.spawnedThings)
+                .Where(thing => thing.Spawned &&
+                                thing.IsInValidStorage() &&
+                                thing.def.IsNonMedicalDrug)
                 .OrderBy(thing => thing.thingIDNumber)
                 .ToList();
         }

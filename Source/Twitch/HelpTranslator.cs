@@ -7,7 +7,7 @@ namespace Colonystats.Twitch
     sealed class HelpTranslator : ITwitchTranslator
     {
 
-        private static readonly string COMMAND = "help";
+        private static readonly string COMMAND = "tcshelp";
 
         public HelpTranslator() : base(COMMAND)
         {
@@ -20,7 +20,7 @@ namespace Colonystats.Twitch
 
         public override string GetHelp()
         {
-            return "Just execute !help to see the different registered commands, use !help {command} to see the command help";
+            return "Just execute !tcshelp to see the different registered commands, use !tcshelp {command} to see the command help";
         }
 
         public override string ParseCommand(ChatMessage msg)
@@ -56,7 +56,7 @@ namespace Colonystats.Twitch
             {
                 response += command.GetCommand() + " | ";
             }
-            return response + "Use !help {command} to see the command help";
+            return response + "Use !tcshelp {command} to see the command help";
         }
     }
 }

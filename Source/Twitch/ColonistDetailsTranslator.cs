@@ -22,7 +22,7 @@ namespace Colonystats.Twitch
 
         public override string GetHelp()
         {
-            return "Use !colonist {colonist nickname} to return the colonist details.";
+            return "Use !colonist {colonist nickname} to return the colonist details. Case insensitive.";
         }
 
         public override string ParseCommand(ChatMessage msg)
@@ -36,13 +36,17 @@ namespace Colonystats.Twitch
                 {
                     return GetPrettyColonist(matching[0]);
                 }
+                else
+                {
+                    return "Colonist " + name + " not found.";
+                }
             }
             return null;
         }
 
         private string GetPrettyColonist(Pawn pawn)
         {
-            return "Colonist Stats for " + pawn.Name + "> | " +
+            return "Colonist Stats for " + pawn.Name.ToStringShort + "> | " +
             "Age: " + pawn.ageTracker.AgeBiologicalYears + " | " +
             "Gender: " + pawn.GetGenderLabel() + " | " +
             "Needs> " +

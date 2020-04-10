@@ -38,6 +38,10 @@ namespace Colonystats.Twitch
                 {
                     return GetPrettyAnimalCount(AnimalTranslator.ANIMAL_DEFS.TryGetValue(type));
                 }
+                else
+                {
+                    return "Def " + type + " not found.";
+                }
             }
             return null;
         }

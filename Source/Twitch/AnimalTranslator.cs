@@ -37,6 +37,14 @@ namespace Colonystats.Twitch
                     {
                         return GetPrettyAnimalList(matching);
                     }
+                    else
+                    {
+                        return "No tamed animals " + def + " found";
+                    }
+                }
+                else
+                {
+                    return "Def " + def + " not found";
                 }
             }
             return null;
