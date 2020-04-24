@@ -25,7 +25,6 @@ namespace Colonystats.Utilities
 
         public static List<Pawn> GetAllTameAnimalsInOrderWithDef(string def)
         {
-
             return Find.Maps.SelectMany(map => map.mapPawns.AllPawnsSpawned)
                 .Where(pawn => pawn.Faction == Faction.OfPlayer &&
                                pawn.RaceProps.Animal &&
@@ -35,9 +34,19 @@ namespace Colonystats.Utilities
                 .ThenBy(pawn => pawn.kindDef.label)
                 .ThenBy(pawn => pawn.Label)
                 .ToList();
-
         }
 
+        public static List<Pawn> GetAllWildAnimalsInOrderWithDef(string def)
+        {
+            return Find.Maps.SelectMany(map => map.mapPawns.AllPawnsSpawned)
+                .Where(pawn => pawn.AnimalOrWildMan() &&
+                               pawn.Faction == null &&
+                               pawn.def.defName.Equals(def))
+                .OrderBy(pawn => pawn.Map?.uniqueID ?? pawn.GetCaravan()?.ID + 500 ?? -1)
+                .ThenBy(pawn => pawn.kindDef.label)
+                .ThenBy(pawn => pawn.Label)
+                .ToList();
+        }
 
         public static List<Pawn> GetAllTameAnimalsInOrderWithName(string name)
         {
@@ -51,6 +60,5 @@ namespace Colonystats.Utilities
                 .ThenBy(pawn => pawn.Label)
                 .ToList();
         }
-
     }
 }

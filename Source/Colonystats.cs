@@ -34,5 +34,4 @@ namespace Colonystats
             TwitchWrapper.StartAsync(false);
         }
     }
-
 }

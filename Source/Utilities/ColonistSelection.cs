@@ -13,7 +13,6 @@ namespace Colonystats.Utilities
         {
             get
             {
-
                 return Find.World.worldPawns.AllPawnsAlive
                     .Where(pawn => pawn.Faction == Faction.OfPlayer &&
                                    pawn.IsColonist)
@@ -52,6 +51,5 @@ namespace Colonystats.Utilities
                 )
                 .ToList();
         }
-
     }
 }

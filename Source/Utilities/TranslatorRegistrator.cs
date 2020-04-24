@@ -20,6 +20,8 @@ namespace Colonystats.Utilities
             AddTranslator(new TraitsTranslator());
             AddTranslator(new HealthTranslator());
             AddTranslator(new DrugsTranslator());
+            AddTranslator(new MealTranslator());
+            AddTranslator(new WildTranslator());
             Logger.Log("Finishing Registering default Twitch translators", LogType.INFO);
         }
 
@@ -40,6 +42,5 @@ namespace Colonystats.Utilities
             Logger.Log("Removing translator " + translator, LogType.INFO);
             TwitchWrapper.TRANSLATORS.Remove(translator);
         }
-
     }
 }

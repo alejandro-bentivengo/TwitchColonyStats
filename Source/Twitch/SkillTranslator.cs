@@ -49,7 +49,8 @@ namespace Colonystats.Twitch
             string response = "Skills for " + pawn.Name.ToStringShort + ": ";
             foreach (SkillRecord skill in pawn.skills.skills)
             {
-                response += skill.def.defName + ": " + skill.Level + " | ";
+                string passion = skill.passion == Passion.Minor ? "p" : (skill.passion == Passion.Major ? "P" : "-");
+                response += skill.def.defName + "(" + passion + "): " + skill.Level + " | ";
             }
             return response.Substring(0, response.Length - 3);
         }

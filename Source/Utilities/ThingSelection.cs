@@ -10,7 +10,7 @@ namespace Colonystats.Utilities
     class ThingSelection
     {
         public static List<Thing> GetAllStoredThings()
-        {            
+        {
             return Find.Maps.SelectMany(map => map.spawnedThings)
                 .Where(thing => thing.Spawned &&
                                 thing.IsInValidStorage())
@@ -23,7 +23,7 @@ namespace Colonystats.Utilities
             return Find.Maps.SelectMany(map => map.spawnedThings)
                 .Where(thing => thing.Spawned &&
                                 thing.IsInValidStorage() &&
-                                thing.LabelNoCount.ToLower().Contains(name))
+                                thing.LabelNoCount.ToLower().Contains(name.ToLower()))
                 .OrderBy(thing => thing.thingIDNumber)
                 .ToList();
         }
@@ -33,7 +33,7 @@ namespace Colonystats.Utilities
             return Find.Maps.SelectMany(map => map.spawnedThings)
                 .Where(thing => thing.Spawned &&
                                 thing.IsInValidStorage() &&
-                                thing.LabelNoCount.ToLower().Equals(name))
+                                thing.LabelNoCount.ToLower().Equals(name.ToLower()))
                 .OrderBy(thing => thing.thingIDNumber)
                 .ToList();
         }
@@ -44,6 +44,17 @@ namespace Colonystats.Utilities
                 .Where(thing => thing.Spawned &&
                                 thing.IsInValidStorage() &&
                                 thing.def.IsNonMedicalDrug)
+                .OrderBy(thing => thing.thingIDNumber)
+                .ToList();
+        }
+
+        public static List<Thing> GetAllStoredFood()
+        {
+            return Find.Maps.SelectMany(map => map.spawnedThings)
+                .Where(thing => thing.Spawned &&
+                                thing.IsInValidStorage() &&
+                                thing.def.IsIngestible &&
+                                thing.def.thingCategories.Contains(ThingCategoryDef.Named("FoodMeals")))
                 .OrderBy(thing => thing.thingIDNumber)
                 .ToList();
         }

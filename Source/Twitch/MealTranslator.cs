@@ -5,11 +5,11 @@ using Verse;
 
 namespace Colonystats.Twitch
 {
-    class ItemTranslator : ITwitchTranslator
+    class MealTranslator : ITwitchTranslator
     {
-        private static readonly string COMMAND = "item";
 
-        public ItemTranslator() : base(COMMAND)
+        private static readonly string COMMAND = "meals";
+        public MealTranslator() : base(COMMAND)
         {
         }
 
@@ -20,31 +20,15 @@ namespace Colonystats.Twitch
 
         public override string GetHelp()
         {
-            return "Use !item {item name} to find how many there are currently in storage. Put the name in \" to exact match the name. Case insensitive. Search needs to be at least 4 character long.";
+            return "Use !meals to find how many meals there are currently in storage. Finds only meals, not raw food.";
         }
 
         public override string ParseCommand(ChatMessage msg)
         {
-            string[] message = msg.Message.Split(' ');
-            if (message.Length > 1)
+            List<Thing> matching = ThingSelection.GetAllStoredFood();
+            if (matching != null && matching.Count > 0)
             {
-                string itemName = msg.Message.Replace("!" + COMMAND + " ", "");
-                if (itemName.Length >= 4)
-                {
-                    List<Thing> matching = null;
-                    if (itemName.StartsWith("\"") && itemName.EndsWith("\""))
-                    {
-                        matching = ThingSelection.GetAllStoredThingsThatExactMatch(itemName.Replace("\"", ""));
-                    }
-                    else
-                    {
-                        matching = ThingSelection.GetAllStoredThingsThatContain(itemName);
-                    }
-                    if (matching != null && matching.Count > 0)
-                    {
-                        return GetPrettyItemCount(matching);
-                    }
-                }
+                return GetPrettyItemCount(matching);
             }
             return null;
         }
@@ -52,7 +36,7 @@ namespace Colonystats.Twitch
         private string GetPrettyItemCount(List<Thing> matching)
         {
             Dictionary<string, long> items = GetTotalCounts(matching);
-            string response = "Found " + items.Count + " items matching: ";
+            string response = "Found " + items.Count + " meals: ";
             foreach (KeyValuePair<string, long> item in items)
             {
                 response += item.Value + " " + item.Key + " | ";

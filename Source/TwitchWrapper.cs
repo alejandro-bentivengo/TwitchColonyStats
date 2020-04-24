@@ -179,8 +179,14 @@ namespace Colonystats
             }
             else
             {
-                Client.SendMessage(Client.GetJoinedChannel(ColonyStatsSettings.channel_username), message);
+                SendChatMessage(message);
             }
+        }
+
+
+        public static void SendChatMessage(string message)
+        {
+            Client.SendMessage(Client.GetJoinedChannel(ColonyStatsSettings.channel_username), message);
         }
     }
 }

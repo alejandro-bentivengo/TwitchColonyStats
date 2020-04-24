@@ -44,7 +44,7 @@ namespace Colonystats.Twitch
                 }
                 else
                 {
-                    return "Def " + def + " not found";
+                    return "The animal " + def + " was not found. The animal type is probably misspelled.";
                 }
             }
             return null;

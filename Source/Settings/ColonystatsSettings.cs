@@ -10,6 +10,7 @@ namespace Colonystats
         public static string bot_username = "";
         public static string oauth_token = "";
 
+        public static float twitchReminder = 5f;
         public static float userCommandTimeout = 5f;
         public static bool connectOnGameStartup = false;
         public static bool enableSpammyMessages = false;
