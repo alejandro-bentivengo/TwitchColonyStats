@@ -44,6 +44,14 @@ namespace Colonystats.Twitch
                     {
                         return GetPrettyItemCount(matching);
                     }
+                    else
+                    {
+                        return "The item " + itemName + " was not found.";
+                    }
+                }
+                else
+                {
+                    return "The item name is too short, it must be at least 4 characters.";
                 }
             }
             return null;
